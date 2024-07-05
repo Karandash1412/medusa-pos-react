@@ -1,0 +1,55 @@
+div.main-page {
+    height: 100vh;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    text-decoration: none;
+    justify-content: flex-start;
+}
+
+header,
+ul,
+.main-page,
+.main-menu a,
+a {
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 40px;
+}
+
+header p {
+    margin: 40px;
+    padding: 10px 25px 10px 25px;
+    border: 2px dashed rgba(0, 165, 16, 1)
+}
+
+ul {
+    margin-top: 100px;
+    width: 465px;
+    gap: 25px;
+    flex-direction: row;
+}
+
+nav ul a {
+    text-decoration: none;
+    display: flex;
+    margin: 0;
+    width: 215px;
+    height: 55px;
+    background-color: rgba(206, 206, 206, 1);
+    border-radius: 10px;
+}
+
+nav ul a li {
+    margin: 0;
+    color: black;
+}

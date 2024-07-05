@@ -74,7 +74,7 @@ input {
     border-radius: 7px;
 }
 
-input:first-child {
+.form input:first-child {
     margin-bottom: 16px;
 }
 
@@ -92,6 +92,7 @@ input:first-child {
     text-align: center;
     margin: 0 auto;
     margin-top: -46px;
+    display: flex;
 }
 
 .policies>a:last-child {
@@ -108,13 +109,13 @@ a {
     font-size: 12px;
 }
 
-button {
+.btn-login {
     margin-top: 36px;
     background-color: black;
     color: white;
     width: 100%;
 }
 
-button:hover {
+.btn-login:hover {
     background-color: black;
 }

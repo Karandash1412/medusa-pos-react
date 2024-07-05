@@ -1,29 +1,29 @@
+import "../styles/main.css"
 import { Link } from 'react-router-dom';
+// import { useState } from "react";
+import StripeTerminals from "../components/StripeTerminals"
+const Main = ({ detectTerminal, setIsLogged }) => {
+    // const [terminal, setTerminal] = useState("Please select the terminal");
 
-const Main = () => {
     return (
-        <div>
+        <div className="main-page">
             <header>
-                <div>
-                    <img src="" alt="" />
-                    <h4>Pavlo Tsyhanok</h4>
-                    <p>Medusa Co.</p>
-                </div>
-                <div>
-                    <img src="" alt="" />
-                    <img src="" alt="" />
-                </div>
+                <h1 className="page-name"> Main Menu</h1>
+                <StripeTerminals name={detectTerminal} />
             </header>
             <nav>
                 <ul>
-                    <li><Link to="/orders">Continue Order <span>(Van Designs)</span></Link></li>
-                    <li><Link to="/new-order">Select Customer (new order)</Link></li>
-                    <li><Link to="/register-customer">Register New Customer</Link></li>
-                    <li><Link to="/catalog">Browse Catalog</Link></li>
-                    <li><Link to="/settings">Settings</Link></li>
+                    <Link to="/orders"><li>Continue Order</li></Link>
+                    <Link to="/register-customer"><li>Register New Customer</li></Link>
+                    <Link to="/terminal"><li>Connect Terminal</li></Link>
+                    <Link to="/new-order"><li>Select Customer (new order)</li></Link>
+                    <Link to="/catalog"><li>Browse Catalog</li></Link>
+                    <Link to="/login" onClick={() => {
+                        setIsLogged(false);
+                    }}><li>Log Out</li></Link>
                 </ul>
-            </nav>
-        </div>
+            </nav >
+        </div >
     );
 };
 
