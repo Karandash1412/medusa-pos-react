@@ -13,6 +13,7 @@ const Terminal = ({ setDetectTerminal }) => {
             </header>
             <nav className='back-menu'>
                 <Link to={".."} onClick={(e) => {
+                    // should we use preventDefault??
                     e.preventDefault();
                     navigate(-1);
                 }}>← Back to Menu</Link>

@@ -10,6 +10,7 @@ import SelectCustomer from "../pages/SelectCustomer";
 import UserAgreement from '../pages/UserAgreement';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
 import { useState } from 'react';
+import NotFound from '../components/NotFound';
 
 const AppRoutes = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -27,6 +28,7 @@ const AppRoutes = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/terminal" element={<Terminal setDetectTerminal={setDetectTerminal} />} />
                 <Route path="/selectCustomer" element={<SelectCustomer />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
         </Router>
     );

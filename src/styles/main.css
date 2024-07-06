@@ -53,3 +53,7 @@ nav ul a li {
     margin: 0;
     color: black;
 }
+
+.color {
+    background-color: rgba(210, 244, 255, 1);
+}

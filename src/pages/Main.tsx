@@ -18,7 +18,7 @@ const Main = ({ detectTerminal, setIsLogged }) => {
                     <Link to="/terminal"><li>Connect Terminal</li></Link>
                     <Link to="/new-order"><li>Select Customer (new order)</li></Link>
                     <Link to="/catalog"><li>Browse Catalog</li></Link>
-                    <Link to="/login" onClick={() => {
+                    <Link className="color" to="/login" onClick={() => {
                         setIsLogged(false);
                     }}><li>Log Out</li></Link>
                 </ul>
