@@ -57,3 +57,13 @@ nav ul a li {
 .color {
     background-color: rgba(210, 244, 255, 1);
 }
+
+#disable {
+    background-color: rgba(206, 206, 206, 1);
+    color: #818181;
+    cursor: not-allowed;
+}
+
+#disable:hover {
+    border: none;
+}

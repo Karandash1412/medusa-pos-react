@@ -12,7 +12,8 @@
     border-radius: 10px;
 }
 
-.form-register input::placeholder {
+.form-register input::placeholder,
+.credit-checkout input::placeholder {
     text-align: center;
 }
 

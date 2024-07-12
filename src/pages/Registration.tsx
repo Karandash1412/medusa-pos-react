@@ -10,8 +10,7 @@ const Register = () => {
         <h1 className='page-name'>Connect Stripe Terminal</h1>
       </header>
       <nav className='back-menu'>
-        <Link to={".."} onClick={(e) => {
-          e.preventDefault();
+        <Link to={".."} onClick={() => {
           navigate(-1);
         }}>← Back to Menu</Link>
       </nav>

@@ -1,9 +1,9 @@
 import "../styles/main.css"
 import { Link } from 'react-router-dom';
-// import { useState } from "react";
 import StripeTerminals from "../components/StripeTerminals"
-const Main = ({ detectTerminal, setIsLogged }) => {
-    // const [terminal, setTerminal] = useState("Please select the terminal");
+
+const Main = ({ detectTerminal, disable, setIsLogged }: { detectTerminal: string, disable: boolean, setIsLogged: (isLogged: boolean) => void }) => {
+    console.log(disable);
 
     return (
         <div className="main-page">
@@ -13,7 +13,7 @@ const Main = ({ detectTerminal, setIsLogged }) => {
             </header>
             <nav>
                 <ul>
-                    <Link to="/orders"><li>Continue Order</li></Link>
+                    {!disable ? (<Link to="/orders"><li>Continue Order</li></Link>) : (<Link to="#" id="disable"><li id="disable">Continue Order</li></Link>)}
                     <Link to="/register-customer"><li>Register New Customer</li></Link>
                     <Link to="/terminal"><li>Connect Terminal</li></Link>
                     <Link to="/new-order"><li>Select Customer (new order)</li></Link>

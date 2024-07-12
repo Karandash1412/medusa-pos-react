@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // { setIsLogged: boolean }
-const Login = ({ setIsLogged }) => {
+const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) => {
     const [visiability, setVisiability] = useState(true);
     const [loginPassword, setLoginPassword] = useState({
         login: "",
@@ -35,8 +35,8 @@ const Login = ({ setIsLogged }) => {
         } else {
             setErrorMsg("Invalid credentials");
         }
-
     }
+
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setLoginPassword((prevValue) => {
@@ -45,8 +45,8 @@ const Login = ({ setIsLogged }) => {
                 [name]: value,
             }
         })
-
     }
+
     return (
         <div className="container-login">
             <div className="left-side">
@@ -70,8 +70,8 @@ const Login = ({ setIsLogged }) => {
                         <button className='btn-login' type="submit" onClick={handleLogin}>Login</button>
                     </form>
                     <div className="policies">
-                        <Link to="/userAgreement">User agreement</Link>
-                        <Link to="/privacyPolicy">Privacy Policy</Link>
+                        <Link to="https://medusajs.com">User agreement</Link>
+                        <Link to="https://medusajs.com">Privacy Policy</Link>
                     </div>
                 </div>
             </div>

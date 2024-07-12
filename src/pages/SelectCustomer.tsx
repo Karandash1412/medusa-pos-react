@@ -12,8 +12,7 @@ const SelectCustomer = () => {
                 <h1 className='page-name'>New Order → Select Customer</h1>
             </header>
             <nav className='back-menu'>
-                <Link to={".."} onClick={(e) => {
-                    e.preventDefault();
+                <Link to={".."} onClick={() => {
                     navigate(-1);
                 }}>← Back to Menu</Link>
             </nav>

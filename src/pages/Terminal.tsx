@@ -4,17 +4,16 @@ import stripeTerminals from "../assets/stripeTerminals";
 import "../styles/stripeTerminal.css";
 
 
-const Terminal = ({ setDetectTerminal }) => {
+const Terminal = ({ setDetectTerminal }: { setDetectTerminal: (detectTerminal: string) => void }) => {
     const navigate = useNavigate();
+
     return (
         <div>
             <header>
                 <h1 className='page-name'>Connect Stripe Terminal</h1>
             </header>
             <nav className='back-menu'>
-                <Link to={".."} onClick={(e) => {
-                    // should we use preventDefault??
-                    e.preventDefault();
+                <Link to={".."} onClick={() => {
                     navigate(-1);
                 }}>← Back to Menu</Link>
             </nav>

@@ -1,0 +1,31 @@
+.back-checkout a {
+    width: 300px;
+
+}
+
+.back-checkout {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20%;
+    align-items: center;
+}
+
+.credit-checkout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+.credit-checkout input {
+    border: 2px solid rgba(206, 206, 206, 1);
+}
+
+.card-security {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 334px;
+}
