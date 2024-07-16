@@ -1,4 +1,4 @@
-const ProductCards = [
+const productCards = [
     {
         id: 1,
         name: "Product Card № 1",
@@ -25,4 +25,4 @@ const ProductCards = [
     },
 ];
 
-export default ProductCards;
+export default productCards;

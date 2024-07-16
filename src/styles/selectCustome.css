@@ -14,6 +14,13 @@ main.select-customer-menu {
     border-radius: 10px;
 }
 
+.customer-results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .search-bar input {
     margin: 0;
     height: 55px;
@@ -21,10 +28,6 @@ main.select-customer-menu {
 
 .search-bar input::placeholder {
     text-align: center;
-}
-
-.search-results .customer-results {
-    height: 408px;
 }
 
 .search-bar p,
@@ -41,7 +44,7 @@ main.select-customer-menu {
     height: 38px;
     background-color: rgba(206, 206, 206, 1);
     border-radius: 10px;
-    margin: 11px;
+    margin: 6px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -51,4 +54,8 @@ main.select-customer-menu {
 .customer p {
     color: black;
     font-weight: 500;
+}
+
+.customer:hover {
+    cursor: pointer;
 }

@@ -1,8 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/creditCard.css";
 
-const CreditCard = () => {
+const CreditCard = ({ client }: { client: any }) => {
     const navigate = useNavigate();
+
+    const charge = () => {
+        console.log(client);
+        navigate("/success");
+    }
     return (
         <div>
             <header>
@@ -26,7 +31,7 @@ const CreditCard = () => {
             </main>
             <nav className="checkout-options">
                 <ul className="checkout-options">
-                    <li><Link to="/success" className="btn-option" id="continue">Charge</Link></li>
+                    <li><button onClick={charge} className="btn-option" id="continue">Charge</button></li>
                 </ul>
             </nav>
         </div>

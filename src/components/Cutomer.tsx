@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
 const Customer = (props: any) => {
     const name = props.name
+    const surname = props.surname;
+
+
     return (
-        <div className="customer">
-            <Link to="/shopping-panel">{name}</Link>
+        <div className="customer" onClick={() => props.handleClick(name)}>
+            <p>{name} {surname}</p>
         </div>
     );
 };

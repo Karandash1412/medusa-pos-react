@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Main from '../pages/Main';
 import Layout from '../pages/Layout';
 import Register from '../pages/Registration';
-import Settings from '../pages/Settings';
 import Checkout from '../pages/Checkout';
 import Login from '../pages/Login';
 import Terminal from "../pages/Terminal";
@@ -17,21 +16,21 @@ const AppRoutes = () => {
     const [isLogged, setIsLogged] = useState(false);
     const [detectTerminal, setDetectTerminal] = useState("Please select the terminal");
     const [disable, setEnable] = useState(true);
+    const [client, setClient] = useState("");
 
     return (
         <Router>
             <Routes>
-                <Route path="/" element={isLogged ? (<Main disable={disable} setIsLogged={setIsLogged} detectTerminal={detectTerminal} />) : (<Navigate replace to={"/login"} />)} />
+                <Route path="/" element={isLogged ? (<Main setEnable={setEnable} setClient={setClient} disable={disable} setIsLogged={setIsLogged} detectTerminal={detectTerminal} />) : (<Navigate replace to={"/login"} />)} />
                 <Route path="/login" element={<Login setIsLogged={setIsLogged} />} />
 
                 <Route path="/new-order" element={<Layout />} />
                 <Route path="/register-customer" element={<Register />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/checkout" element={<Checkout />} />
                 <Route path="/terminal" element={<Terminal setDetectTerminal={setDetectTerminal} />} />
-                <Route path="/selectCustomer" element={<SelectCustomer />} />
-                <Route path="/shopping-panel" element={<ShoppingPanel />} />
-                <Route path="/creditCard" element={<CreditCard />} />
+                <Route path="/select-customer" element={<SelectCustomer setEnable={setEnable} setClient={setClient} />} />
+                <Route path="/shopping-panel" element={<ShoppingPanel setEnable={setEnable} setClient={setClient} disable={disable} client={client} />} />
+                <Route path="/checkout" element={<Checkout setClient={setClient} />} />
+                <Route path="/creditCard" element={<CreditCard client={client} />} />
                 <Route path="/success" element={<Success />} />
 
                 <Route path='*' element={<NotFound />} />

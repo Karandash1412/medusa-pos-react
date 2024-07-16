@@ -28,9 +28,17 @@ main.main-panel {
     margin: 15px 0px;
 }
 
+.panel-right-side .search-bar {
+    height: 609px;
+}
+
+.panel-right-side>.search-bar>div {
+    margin: 5px 0px;
+}
+
 .panel-right-side {
     flex: 1.2;
-    height: 650px;
+
 }
 
 .categories {
@@ -69,7 +77,7 @@ main.main-panel {
 
 .product-card p,
 .categories a,
-.summery-customer a,
+.summery-customer h2,
 .panel-product p,
 .btn-option,
 .credit-checkout {
@@ -83,22 +91,25 @@ main.main-panel {
 .summery {
     border: 2px solid rgba(206, 206, 206, 1);
     border-radius: 10px;
-    height: 608px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 10px 25px 10px 25px;
+    height: 100%;
+    gap: 25px;
 }
 
 .summery-customer,
 .panel-product div {
     background-color: rgba(206, 206, 206, 1);
     border-radius: 10px;
-    height: 55px;
+    height: 115px;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .panel-product {
@@ -110,18 +121,16 @@ main.main-panel {
     align-items: center;
     gap: 10px;
     width: 100%;
-    height: 200px;
     padding: 10px 15px 10px 15px;
+    height: 100%;
+    overflow: scroll;
 }
 
-.panel-product>div {
+.panel-product>.product-card {
     display: flex;
     align-items: center;
     width: 350px;
     height: 55px;
-}
-
-.panel-product>div:first-child {
     margin-bottom: 10px;
 }
 
@@ -130,10 +139,21 @@ main.main-panel {
     color: white;
     width: 100%;
     text-decoration: none;
-    height: 55px;
+    height: 115px;
     border-radius: 10px;
 }
 
 .panel-product .cart-totals {
+    height: 200px;
+}
+
+.shopping-cart {
+    border: 2px solid rgba(206, 206, 206, 1);
     height: 100%;
+    border-radius: 10px;
+    justify-content: flex-start;
+}
+
+.product-card:hover {
+    cursor: pointer;
 }

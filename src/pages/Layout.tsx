@@ -26,7 +26,7 @@ const Layout = () => {
       </nav>
       <nav>
         <ul>
-          <Link to="/selectCustomer"><li>Existing Customer</li></Link>
+          <Link to="/select-customer"><li>Existing Customer</li></Link>
           <Link to="/register-customer"><li>New Customer</li></Link>
         </ul>
       </nav>

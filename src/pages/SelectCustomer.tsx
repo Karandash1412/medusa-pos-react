@@ -3,8 +3,15 @@ import Customer from "../components/Cutomer";
 import customers from "../assets/customers"
 import "../styles/selectCustome.css";
 
-const SelectCustomer = () => {
+const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (enable: boolean) => void }) => {
     const navigate = useNavigate();
+
+    function handleClick(name: any) {
+        setClient(customers.find((clientName) => clientName.fName === name));
+        setEnable(false);
+        // sdfsdfsdfsdfsdfsdfsdfsdf
+        navigate(`/shopping-panel`);
+    }
 
     return (
         <div>
@@ -25,7 +32,7 @@ const SelectCustomer = () => {
                     <p>Search Results</p>
                     <div className="customer-results">
                         {customers.map((e) => {
-                            return <Customer name={e.name} />
+                            return <Customer handleClick={handleClick} name={e.fName} surname={e.lName} key={e.id} />
                         })}
                     </div>
                 </div>
