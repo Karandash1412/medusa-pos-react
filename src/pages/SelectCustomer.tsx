@@ -9,8 +9,7 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
     function handleClick(name: any) {
         setClient(customers.find((clientName) => clientName.fName === name));
         setEnable(false);
-        // sdfsdfsdfsdfsdfsdfsdfsdf
-        navigate(`/shopping-panel`);
+        navigate("/shopping-panel");
     }
 
     return (

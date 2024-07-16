@@ -26,7 +26,7 @@ const Checkout = ({ setClient }: { setClient: any }) => {
         }
       }
     })
-    navigate("/creditCard");
+    navigate("/credit-card");
   }
   return (<div>
     <header>
