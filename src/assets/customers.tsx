@@ -9,7 +9,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: [],
     },
     {
         id: 2,
@@ -20,7 +21,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: [],
     },
     {
         id: 3,
@@ -31,7 +33,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: [],
     },
     {
         id: 4,
@@ -42,7 +45,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: [],
     },
     {
         id: 5,
@@ -53,7 +57,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: [],
     },
     {
         id: 6,
@@ -64,7 +69,8 @@ const customers = [
         companyName: "",
         website: "",
         cartProduct: [],
-        card: ""
+        card: "",
+        notes: ["left a good tips"],
     },
 ];
 

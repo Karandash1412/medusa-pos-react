@@ -1,0 +1,20 @@
+.order-note {
+    margin: 25px 18px;
+}
+
+.order-note input {
+    background-color: rgba(210, 244, 255, 1);
+    height: 70px;
+    width: 60%;
+}
+
+.order-note input::placeholder {
+    color: black;
+    text-align: center;
+}
+
+.btn-order-note {
+    width: 120px;
+    height: 40px;
+    background-color: black;
+}

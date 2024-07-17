@@ -14,6 +14,7 @@ const Register = () => {
     website: "",
     cartProduct: [],
     card: "",
+    notes: [],
   })
 
   const navigate = useNavigate();

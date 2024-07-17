@@ -36,7 +36,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                     <p>🔎 Search Product</p>
                     <input type="text" placeholder="Search Product..." />
                 </div>
-                <Link to="/order-note">📝 Order Note</Link>
+                {!disable ? (<Link to="/order-note"><li>📝 Order Note</li></Link>) : (<Link to="#" id="disable"><li id="disable">📝 Order Note</li></Link>)}
             </nav>
             <main className="main-panel">
                 <div className="panel-left-side">

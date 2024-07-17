@@ -2,12 +2,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState } from 'react';
 import { appRoutes } from './Routes';
 
-interface RouteComponentProps {
-    setEnable: (disable: boolean) => void;
-    setClient: (client: any) => void;
-    setIsLogged: (isLoggedIn: boolean) => void;
-    setDetectTerminal: (detectTerminal: string) => void;
-}
+// interface RouteComponentProps {
+//     setEnable: (disable: boolean) => void;
+//     setClient: (client: any) => void;
+//     setIsLogged: (isLoggedIn: boolean) => void;
+//     setDetectTerminal: (detectTerminal: string) => void;
+// }
 
 const AppRoutes = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -30,7 +30,7 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-// import Main from '../pages/Main';
+// import Main from '../pages/Main';¬
 // import Layout from '../pages/Layout';
 // import Register from '../pages/Registration';
 // import Checkout from '../pages/Checkout';

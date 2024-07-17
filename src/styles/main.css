@@ -61,7 +61,12 @@ nav ul a li {
 #disable {
     background-color: rgba(206, 206, 206, 1);
     color: #818181;
+    list-style-type: none;
     cursor: not-allowed;
+}
+
+li {
+    list-style-type: none;
 }
 
 #disable:hover {

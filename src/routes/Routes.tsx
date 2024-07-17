@@ -9,6 +9,7 @@ import NotFound from '../components/NotFound';
 import ShoppingPanel from '../pages/ShoppingPannel';
 import CreditCard from '../pages/CreditCard';
 import Success from '../pages/Success';
+import OrderNote from '../pages/OrderNote';
 
 export const appRoutes = [
     {
@@ -64,6 +65,11 @@ export const appRoutes = [
     {
         path: "/success",
         component: Success,
+        requiresAuth: true,
+    },
+    {
+        path: "/order-note",
+        component: OrderNote,
         requiresAuth: true,
     },
 ]

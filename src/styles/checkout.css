@@ -1,4 +1,5 @@
-.checkout-options {
+.checkout-options,
+.order-note {
     display: flex;
     flex-direction: column;
     justify-content: center;
