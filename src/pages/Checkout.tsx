@@ -28,28 +28,29 @@ const Checkout = ({ setClient }: { setClient: any }) => {
     })
     navigate("/credit-card");
   }
-  return (<div>
-    <header>
-      <h1 className='page-name'>Checkout</h1>
-    </header>
-    <nav className='back-menu'>
-      <Link to={".."} onClick={() => {
-        navigate(-1);
-      }}>← Back to Catalog</Link>
-    </nav>
-    <nav className="checkout-options">
-      <ul className="checkout-options">
-        <li><button onClick={() => handleClick(0)} className={selecte === 0 ? "btn-option selected" : "btn-option"}> Credit/Debit Card (Terminal)</button></li>
-        <li><button onClick={() => handleClick(1)} className={selecte === 1 ? "btn-option selected" : "btn-option"}>Credit/Debit Card (Digital)</button></li>
-        <li><button onClick={() => handleClick(2)} className={selecte === 2 ? "btn-option selected" : "btn-option"}>Draft Order</button></li>
-      </ul>
-    </nav>
-    <nav className="checkout-options">
-      <ul className="checkout-options">
-        <li><button className="btn-option" id="continue" onClick={submitCheckout}>Continue</button></li>
-      </ul>
-    </nav>
-  </div>
+  return (
+    <div>
+      <header>
+        <h1 className='page-name'>Checkout</h1>
+      </header>
+      <nav className='back-menu'>
+        <Link to={".."} onClick={() => {
+          navigate(-1);
+        }}>← Back to Catalog</Link>
+      </nav>
+      <nav className="checkout-options">
+        <ul className="checkout-options">
+          <li><button onClick={() => handleClick(0)} className={selecte === 0 ? "btn-option selected" : "btn-option"}> Credit/Debit Card (Terminal)</button></li>
+          <li><button onClick={() => handleClick(1)} className={selecte === 1 ? "btn-option selected" : "btn-option"}>Credit/Debit Card (Digital)</button></li>
+          <li><button onClick={() => handleClick(2)} className={selecte === 2 ? "btn-option selected" : "btn-option"}>Draft Order</button></li>
+        </ul>
+      </nav>
+      <nav className="checkout-options">
+        <ul className="checkout-options">
+          <li><button className="btn-option" id="continue" onClick={submitCheckout}>Continue</button></li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 

@@ -3,7 +3,6 @@ import "../styles/login.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// { setIsLogged: boolean }
 const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) => {
     const [visiability, setVisiability] = useState(true);
     const [loginPassword, setLoginPassword] = useState({
@@ -59,9 +58,9 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) =>
                     <h2>Login</h2>
                     <form className="form" method="">
                         <span>{errorMsg}</span>
-                        <input type="text" placeholder="www.example.com" value={loginPassword.login} name='login' onChange={handleChange} required />
+                        <input type="text" placeholder="www.example.com" value={loginPassword.login} name='login' onChange={handleChange} />
                         <div className="password-container">
-                            <input type={visiability ? "password" : "text"} placeholder="Password" name='password' onChange={handleChange} value={loginPassword.password} required />
+                            <input type={visiability ? "password" : "text"} placeholder="Password" name='password' onChange={handleChange} value={loginPassword.password} autoComplete={visiability ? "on" : "off"} />
                             <span onClick={showPaswword}>
                                 <img src="/src/assets/IconButton.png" alt="eye icon" className="icon-toggle-eye" />
                             </span>

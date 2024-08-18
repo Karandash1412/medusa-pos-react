@@ -1,12 +1,36 @@
 import "../styles/shoppingPanel.css"
 import { Link, useNavigate, } from "react-router-dom";
+// import { Product } from "@medusajs/medusa";
+// import { useProducts } from "medusa-react";
+import { useQuery } from "@tanstack/react-query";
 import productCards from "../assets/ProductsCard";
-import Product from "../components/Product";
+import Products from "../components/Products";
 import Customer from "../components/Cutomer";
 import customers from "../assets/customers";
 
 const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any, disable: boolean, setClient: any, setEnable: (enable: boolean) => void }) => {
     const navigate = useNavigate();
+    // const { products, isLoading } = useProducts();
+    const productQuery = useQuery({
+        queryKey: ["product"],
+        enabled: client?.fName != null && client?.lName != null,
+        // get API request from the medusa server
+        //import {getProductCards} from "./api/products";
+        // queryFn: getProductCards,
+        queryFn: () => [...productCards],
+    });
+    const customerQuery = useQuery({
+        queryKey: ["customer"],
+        // get API request from the medusa server
+        //import {getCustomers} from "./api/Customers";
+        // queryFn: getCustomers,
+        queryFn: () => {
+            console.log(customerQuery.data);
+            return [...customers]
+        },
+    });
+    if (customerQuery.isLoading) return <h1>Loading...</h1>
+    if (customerQuery.isError) return <pre>{JSON.stringify(customerQuery.error)}</pre>
 
     function handleClick(name: any) {
         setClient(customers.find((clientName) => clientName.fName === name));
@@ -17,7 +41,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
         const selectedProduct = productCards.find((productName) => productName.name === name);
         const updatedCart = [...client.cartProduct, selectedProduct];
         setClient({ ...client, cartProduct: updatedCart });
-
     }
 
     return (
@@ -50,9 +73,21 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                     <div className="search-bar">
                         <p>📦 Product Browser</p>
                         <div className="product-container">
-                            {productCards.map((e) => {
-                                return <Product key={e.id} name={e.name} selectProduct={selectProduct} />
-                            })}
+                            {/* {isLoading ? (
+                                <div>Loading...</div>
+                            ) : (
+                                products?.map((product) => {
+                                    return <Products key={product.id} name={product.title} selectProduct={selectProduct} />
+                                })
+                            )
+                            } */}
+                            {productQuery.isLoading
+                                ? "Select the customer first"
+                                : productQuery.isError
+                                    ? "Eror Loading Product cards"
+                                    : productQuery.data.map((e) =>
+                                        <Products key={e.id} name={e.name} selectProduct={selectProduct} />
+                                    )}
                         </div>
                     </div>
                 </div>
@@ -65,7 +100,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                                     <h2>👨Customer {client.fName} {client.lName}</h2>
                                 </div>
                                 <div className="panel-product">
-                                    {client.cartProduct.map((e: any) => <Product key={e.id} name={e.name} />)}
+                                    {client.cartProduct.map((e: any) => <Products key={e.id} name={e.name} />)}
                                 </div>
                                 <div className="panel-product">
                                     <div className="cart-totals">
@@ -77,14 +112,16 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                         ) : (
                             <div className="summery">
                                 <div className="customer-results shopping-cart">
-                                    {customers.map((e) => { return <Customer handleClick={handleClick} name={e.fName} surname={e.lName} key={e.id} /> })}
+                                    {customerQuery.data.map((e) => {
+                                        return <Customer handleClick={handleClick} name={e.fName} surname={e.lName} key={e.id} />
+                                    })}
                                 </div>
                             </div>
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 };
 

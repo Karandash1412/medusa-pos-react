@@ -1,11 +1,21 @@
 import { Link, useNavigate } from 'react-router-dom';
 import StripeTerminals from "../components/StripeTerminals";
 import stripeTerminals from "../assets/stripeTerminals";
+import { useQuery } from "@tanstack/react-query";
 import "../styles/stripeTerminal.css";
 
 
 const Terminal = ({ setDetectTerminal }: { setDetectTerminal: (detectTerminal: string) => void }) => {
     const navigate = useNavigate();
+    const terminalQuery = useQuery({
+        queryKey: ["terminal"],
+        // get API request from the medusa server
+        //import {getStripeTerminals} from "./api/stripeTerminals";
+        // queryFn: getStripeTerminals,
+        queryFn: () => [...stripeTerminals],
+    });
+    if (terminalQuery.isLoading) return <h1>Loading...</h1>
+    if (terminalQuery.isError) return <pre>{JSON.stringify(terminalQuery.error)}</pre>
 
     return (
         <div>
@@ -18,7 +28,7 @@ const Terminal = ({ setDetectTerminal }: { setDetectTerminal: (detectTerminal: s
                 }}>← Back to Menu</Link>
             </nav>
             <main className='terminals'>
-                {stripeTerminals.map((e) => <StripeTerminals selectTerminal={(e: any) => {
+                {terminalQuery.data.map((e) => <StripeTerminals selectTerminal={(e: any) => {
                     setDetectTerminal(e.target.innerText);
                     navigate("/")
                 }} key={e.id} name={e.name} />
