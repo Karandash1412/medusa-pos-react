@@ -1,9 +1,9 @@
 const Product = (props: any) => {
-  const name = props.name;
+  const { title, id, uniqueId } = props;
 
   return (
-    <div className="product-card" onClick={() => props.selectProduct(name)}>
-      <p>{name}</p>
+    <div className="product-card" onClick={() => props.selectProduct(id, uniqueId)}>
+      <p>{title}</p>
     </div>
   );
 };

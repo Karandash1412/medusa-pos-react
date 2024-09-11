@@ -1,6 +1,7 @@
 import "../styles/main.css"
 import { Link } from 'react-router-dom';
 import StripeTerminals from "../components/StripeTerminals"
+import { medusa } from "../lib/medusa-provider";
 
 const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { setEnable: (disable: boolean) => void, setClient: any, detectTerminal: string, disable: boolean, setIsLogged: (isLogged: boolean) => void }) => {
 
@@ -21,6 +22,7 @@ const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { 
                         setEnable(true);
                         setClient("");
                         setIsLogged(false);
+                        medusa.admin.auth.deleteSession();
                     }}><li>Log Out</li></Link>
                 </ul>
             </nav >

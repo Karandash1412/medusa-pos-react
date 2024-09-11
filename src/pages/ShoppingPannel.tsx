@@ -1,57 +1,115 @@
-import "../styles/shoppingPanel.css"
-import { Link, useNavigate, } from "react-router-dom";
-// import { Product } from "@medusajs/medusa";
-// import { useProducts } from "medusa-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import productCards from "../assets/ProductsCard";
 import Products from "../components/Products";
-import Customer from "../components/Cutomer";
-import customers from "../assets/customers";
+import Customer from "../components/Customer";
+import { medusa } from "../lib/medusa-provider";
+import "../styles/shoppingPanel.css";
 
-const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any, disable: boolean, setClient: any, setEnable: (enable: boolean) => void }) => {
+const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any; disable: boolean; setClient: any; setEnable: (enable: boolean) => void; }) => {
     const navigate = useNavigate();
-    // const { products, isLoading } = useProducts();
-    const productQuery = useQuery({
-        queryKey: ["product"],
-        enabled: client?.fName != null && client?.lName != null,
-        // get API request from the medusa server
-        //import {getProductCards} from "./api/products";
-        // queryFn: getProductCards,
-        queryFn: () => [...productCards],
-    });
-    const customerQuery = useQuery({
+
+    // Query for customers
+    const { isLoading: customerIsLoading, isError: customerIsError, data: customersData, error: customerError, } = useQuery({
         queryKey: ["customer"],
-        // get API request from the medusa server
-        //import {getCustomers} from "./api/Customers";
-        // queryFn: getCustomers,
-        queryFn: () => {
-            console.log(customerQuery.data);
-            return [...customers]
+        queryFn: async () => {
+            const response = await medusa.admin.customers.list();
+            return response.customers; // Return customers array from response
         },
     });
-    if (customerQuery.isLoading) return <h1>Loading...</h1>
-    if (customerQuery.isError) return <pre>{JSON.stringify(customerQuery.error)}</pre>
 
-    function handleClick(name: any) {
-        setClient(customers.find((clientName) => clientName.fName === name));
-        setEnable(false);
+    // Query for products
+    const { isLoading: productIsLoading, isError: productIsError, data: productQuery, error: productError, } = useQuery({
+        queryKey: ["products"],
+        queryFn: async () => {
+            const response = await medusa.admin.products.list();
+            return response.products;
+        },
+    });
+
+    // Handle loading and error states for customers
+    if (customerIsLoading) return <h1>Loading...</h1>;
+    if (customerIsError) {
+        const typedError = customerError as Error;
+        return <div>Error: {typedError.message}</div>;
     }
 
-    function selectProduct(name: string) {
-        const selectedProduct = productCards.find((productName) => productName.name === name);
-        const updatedCart = [...client.cartProduct, selectedProduct];
-        setClient({ ...client, cartProduct: updatedCart });
+    // Update selectProduct to use the API-based draft order mutation
+    function selectProduct(productId: string) {
+        const selectedProduct = productQuery?.find((product: any) => product.id === productId);
+
+        const updatedCart = client.customerOrder ? [...client.customerOrder, selectedProduct] : [selectedProduct];
+
+        const orderLength = updatedCart.length;
+
+        updatedCart[updatedCart.length - 1] = { ...selectedProduct, uniqueId: orderLength };
+
+        setClient((prevInfo: any) => {
+            return { ...prevInfo, customerOrder: updatedCart };
+        });
     }
+
+    // Handle client selection
+    function handleClick(id: any) {
+        const selectedClient = customersData?.find((customer: any) => customer.id === id);
+        if (selectedClient) {
+            setClient(selectedClient);
+            setEnable(false);
+        }
+    }
+
+    function deleteProduct(uniqueId: string) {
+        setClient((prevInfo: any) => {
+            const updatedOrder = prevInfo.customerOrder.filter((product: any) => product.uniqueId !== uniqueId);
+            return { ...prevInfo, customerOrder: updatedOrder };
+        });
+    }
+
+
+    const handleCheckout = async () => {
+        const email = client.email;
+        const region_id = 'reg_01J5CG09VEMADX7MHZ2AV65DA6';
+
+        const shippingOptionsResponse = await medusa.admin.shippingOptions.list({
+            region_id: region_id,
+        });
+        const shippingOptions = shippingOptionsResponse.shipping_options
+
+        const createDraftOrder = await medusa.admin.draftOrders.create({
+            email,
+            region_id,
+            items: [
+                {
+                    // defined product
+                    quantity: client.customerOrder.length,
+                },
+                {
+                    // custom product
+                    quantity: 1,
+                    unit_price: 1000,
+                    title: "Custom Product",
+                },
+            ],
+            shipping_methods: [
+                {
+                    option_id: shippingOptions[0].id,
+
+                },
+            ],
+        })
+        console.log(createDraftOrder);
+    };
+
 
     return (
         <div>
             <header>
-                <h1 className='page-name'>Shopping Panel</h1>
+                <h1 className="page-name">Shopping Panel</h1>
             </header>
-            <nav className='back-menu shopping-nav-bar'>
-                {disable ? (<Link to={".."} onClick={() => {
-                    navigate(-1);
-                }}>← Back to Menu</Link>
+            <nav className="back-menu shopping-nav-bar">
+                {disable ? (
+                    <Link to={".."} onClick={() => navigate(-1)}>
+                        ← Back to Menu
+                    </Link>
                 ) : (
                     <Link to={"/"}>← Back to Menu</Link>
                 )}
@@ -59,7 +117,15 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                     <p>🔎 Search Product</p>
                     <input type="text" placeholder="Search Product..." />
                 </div>
-                {!disable ? (<Link to="/order-note"><li>📝 Order Note</li></Link>) : (<Link to="#" id="disable"><li id="disable">📝 Order Note</li></Link>)}
+                {!disable ? (
+                    <Link to="/order-note">
+                        <li>📝 Order Note</li>
+                    </Link>
+                ) : (
+                    <Link to="#" id="disable">
+                        <li id="disable">📝 Order Note</li>
+                    </Link>
+                )}
             </nav>
             <main className="main-panel">
                 <div className="panel-left-side">
@@ -73,21 +139,19 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                     <div className="search-bar">
                         <p>📦 Product Browser</p>
                         <div className="product-container">
-                            {/* {isLoading ? (
-                                <div>Loading...</div>
+                            {!disable ? (
+                                productIsLoading ? (
+                                    <h2>Loading Products...</h2>
+                                ) : productIsError ? (
+                                    <h2>Error Loading Product Cards: {(productError as Error).message}</h2>
+                                ) : (
+                                    productQuery?.map((e: any) => (
+                                        <Products key={e.id} title={e.title} selectProduct={() => selectProduct(e.id)} />
+                                    ))
+                                )
                             ) : (
-                                products?.map((product) => {
-                                    return <Products key={product.id} name={product.title} selectProduct={selectProduct} />
-                                })
-                            )
-                            } */}
-                            {productQuery.isLoading
-                                ? "Select the customer first"
-                                : productQuery.isError
-                                    ? "Eror Loading Product cards"
-                                    : productQuery.data.map((e) =>
-                                        <Products key={e.id} name={e.name} selectProduct={selectProduct} />
-                                    )}
+                                <h2>Select the customer first</h2>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -97,31 +161,39 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any,
                         {!disable ? (
                             <div className="summery">
                                 <div className="summery-customer">
-                                    <h2>👨Customer {client.fName} {client.lName}</h2>
+                                    <h2>
+                                        👨 Customer is {client.first_name} {client.last_name}
+                                    </h2>
                                 </div>
                                 <div className="panel-product">
-                                    {client.cartProduct.map((e: any) => <Products key={e.id} name={e.name} />)}
+                                    {(client.customerOrder?.map((e: any) => <Products key={e.id} title={e.title} selectProduct={() => deleteProduct(e.uniqueId)} />))}
                                 </div>
                                 <div className="panel-product">
                                     <div className="cart-totals">
                                         <p>Cart Totals</p>
                                     </div>
                                 </div>
-                                <Link className="btn-checkout" to="/checkout">Checkout</Link>
+                                <button className="btn-checkout" onClick={handleCheckout}>Checkout</button>
                             </div>
                         ) : (
                             <div className="summery">
                                 <div className="customer-results shopping-cart">
-                                    {customerQuery.data.map((e) => {
-                                        return <Customer handleClick={handleClick} name={e.fName} surname={e.lName} key={e.id} />
-                                    })}
+                                    {customersData?.map((e: any) => (
+                                        <Customer
+                                            handleClick={handleClick}
+                                            name={e.first_name}
+                                            surname={e.last_name}
+                                            key={e.id}
+                                            id={e.id}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         )}
                     </div>
                 </div>
-            </main >
-        </div >
+            </main>
+        </div>
     );
 };
 

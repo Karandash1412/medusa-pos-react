@@ -1,16 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { appRoutes } from './Routes';
-// import { MedusaProvider } from 'medusa-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-// interface RouteComponentProps {
-//     setEnable: (disable: boolean) => void;
-//     setClient: (client: any) => void;
-//     setIsLogged: (isLoggedIn: boolean) => void;
-//     setDetectTerminal: (detectTerminal: string) => void;
-// }
 
 const queryClient = new QueryClient();
 
@@ -20,10 +13,6 @@ const AppRoutes = () => {
     const [disable, setEnable] = useState(true);
     const [client, setClient] = useState("");
     return (
-        // <MedusaProvider
-        //     queryClientProviderProps={{ client: queryClient }}
-        //     baseUrl='http://localhost:9000'
-        // >
         <QueryClientProvider client={queryClient}>
             <Router>
                 <Routes>
@@ -36,9 +25,8 @@ const AppRoutes = () => {
                     })}
                 </Routes>
             </Router>
-            {/* <ReactQueryDevtools initialIsOpen={false}/> */}
+            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
-        // </MedusaProvider>
     );
 };
 

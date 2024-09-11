@@ -1,50 +1,62 @@
 import "../styles/index.css";
 import "../styles/login.css";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
+import { medusa } from "../lib/medusa-provider";
+// Initialize Medusa client
+
 
 const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) => {
+
     const [visiability, setVisiability] = useState(true);
+
     const [loginPassword, setLoginPassword] = useState({
         login: "",
         password: "",
-    })
-    const [errorMsg, setErrorMsg] = useState("")
+    });
 
-    //Navigation
+    const [errorMsg, setErrorMsg] = useState("");
+
+    // Navigation
     const navigation = useNavigate();
 
-    const logInObj = {
-        username: "medusa.js",
-        password: "1234",
-    }
+    const queryClient = useQueryClient();
 
-    const showPaswword = () => {
-        if (visiability) {
-            setVisiability(false);
-        } else {
-            setVisiability(true);
-        }
-    }
-    const handleLogin = (e: any) => {
-        e.preventDefault();
-        if (logInObj.username === loginPassword.login && logInObj.password === loginPassword.password) {
+    const mutation = useMutation({
+        mutationFn: (credentials: { email: string; password: string }) =>
+            medusa.admin.auth.createSession(credentials),
+        // onSuccess: (data: { user: { id: string } }) => {
+        onSuccess: () => {
             setIsLogged(true);
+            queryClient.invalidateQueries({ queryKey: ['admin'] });
             navigation("/");
-        } else {
+        },
+        // onError: (error: any) => {
+        onError: () => {
             setErrorMsg("Invalid credentials");
-        }
-    }
+        },
+    });
 
-    const handleChange = (e: any) => {
+    const showPassword = () => {
+        setVisiability(!visiability);
+    };
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        mutation.mutate({
+            email: loginPassword.login,
+            password: loginPassword.password,
+        });
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setLoginPassword((prevValue) => {
-            return {
-                ...prevValue,
-                [name]: value,
-            }
-        })
-    }
+        setLoginPassword((prevValue) => ({
+            ...prevValue,
+            [name]: value,
+        }));
+    };
 
     return (
         <div className="container-login">
@@ -55,18 +67,37 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) =>
             </div>
             <div className="right-side">
                 <div className="login-form">
-                    <h2>Login</h2>
-                    <form className="form" method="">
+                    <h2>Admin Login</h2>
+                    <form className="form" onSubmit={handleLogin}>
                         <span>{errorMsg}</span>
-                        <input type="text" placeholder="www.example.com" value={loginPassword.login} name='login' onChange={handleChange} />
+                        <input
+                            type="text"
+                            placeholder="www.example.com"
+                            value={loginPassword.login}
+                            name="login"
+                            onChange={handleChange}
+                        />
                         <div className="password-container">
-                            <input type={visiability ? "password" : "text"} placeholder="Password" name='password' onChange={handleChange} value={loginPassword.password} autoComplete={visiability ? "on" : "off"} />
-                            <span onClick={showPaswword}>
-                                <img src="/src/assets/IconButton.png" alt="eye icon" className="icon-toggle-eye" />
+                            <input
+                                type={visiability ? "password" : "text"}
+                                placeholder="Password"
+                                name="password"
+                                onChange={handleChange}
+                                value={loginPassword.password}
+                                autoComplete={visiability ? "on" : "off"}
+                            />
+                            <span onClick={showPassword}>
+                                <img
+                                    src="/src/assets/IconButton.png"
+                                    alt="eye icon"
+                                    className="icon-toggle-eye"
+                                />
                             </span>
                         </div>
                         <a href="">Forgot your password?</a>
-                        <button className='btn-login' type="submit" onClick={handleLogin}>Login</button>
+                        <button className="btn-login" type="submit">
+                            Login
+                        </button>
                     </form>
                     <div className="policies">
                         <Link to="https://medusajs.com">User agreement</Link>
@@ -77,4 +108,5 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: boolean) => void }) =>
         </div>
     );
 };
+
 export default Login;

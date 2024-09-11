@@ -10,6 +10,7 @@ import ShoppingPanel from '../pages/ShoppingPannel';
 import CreditCard from '../pages/CreditCard';
 import Success from '../pages/Success';
 import OrderNote from '../pages/OrderNote';
+import TestProduct from '../pages/TestProduct';
 
 export const appRoutes = [
     {
@@ -71,5 +72,10 @@ export const appRoutes = [
         path: "/order-note",
         component: OrderNote,
         requiresAuth: true,
+    },
+    {
+        path: "/test-product",
+        component: TestProduct,
+        requiresAuth: false,
     },
 ]

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import customers from '../assets/customers';
 import '../styles/register.css';
-
+import { medusa } from '../lib/medusa-provider';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,22 +20,40 @@ const Register = () => {
     cartProduct: [],
     card: "",
     notes: [],
-  })
+  });
 
   const newCustomerMutation = useMutation({
     mutationFn: async (newCustomer: any) => {
       // Simulate a network request with a delay (e.g., using fetch or axios in a real application)
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      customers.push(newCustomer);
-      return newCustomer;
+
+      // Call the Medusa admin API to create a new customer
+      const response = await medusa.admin.customers.create({
+        email: newCustomer.email,
+        first_name: newCustomer.fName,
+        last_name: newCustomer.lName,
+        password: newCustomer.password,
+      });
+
+      // Return the newly created customer data
+      return response.customer;
     },
     onSuccess: () => {
-      queryCustomer.invalidateQueries(["customer"])
+      // Invalidate the customer query to refresh the data
+      queryCustomer.invalidateQueries({ queryKey: ["customer"] });
+
+
+      // Navigate to the "select-customer" page
       navigate("/select-customer");
-    }
-  })
-  if (newCustomerMutation.isLoading) return <h1>Loading...</h1>
-  if (newCustomerMutation.isError) return <pre>{JSON.stringify(newCustomerMutation.error)}</pre>
+    },
+    onError: (error: any) => {
+      // Handle error (optional)
+      console.error("Error creating customer:", error);
+    },
+  });
+
+  if (newCustomerMutation.isSuccess) return <h1>Loading...</h1>;
+  if (newCustomerMutation.isError) return <pre>{JSON.stringify(newCustomerMutation.error)}</pre>;
 
   function handleChange(e: any) {
     const { name, value } = e.target;
@@ -43,7 +61,7 @@ const Register = () => {
       return {
         ...prevValue,
         [name]: value,
-      }
+      };
     });
   }
 
@@ -56,16 +74,13 @@ const Register = () => {
     }
   }
 
-
   return (
     <div className='registration'>
       <header>
         <h1 className='page-name'>Connect Stripe Terminal</h1>
       </header>
       <nav className='back-menu'>
-        <Link to={".."} onClick={() => {
-          navigate(-1);
-        }}>← Back to Menu</Link>
+        <Link to={".."} onClick={() => navigate(-1)}>← Back to Menu</Link>
       </nav>
       <main>
         <div className='form-register'>
@@ -75,14 +90,12 @@ const Register = () => {
             <input type="text" placeholder="Last Name" value={form.lName} onChange={handleChange} name="lName" />
             <input type="email" placeholder="Email" value={form.email} onChange={handleChange} name="email" />
             <input type="text" placeholder="Password" value={form.password} onChange={handleChange} name="password" />
-          </form>
-        </div>
-        <div className='form-register'>
-          <h2 className='page-subname'>Custom Fields</h2>
-          <form onSubmit={registerCustomer}>
+            <h2 className='page-subname'>Custom Fields</h2>
             <input type="text" placeholder="Company Name" value={form.companyName} onChange={handleChange} name="companyName" />
             <input type="text" placeholder="Website" value={form.website} onChange={handleChange} name="website" />
-            <button disabled={newCustomerMutation.isLoading} className='btn-register' type='submit'>{newCustomerMutation.isLoading ? "Loading..." : "Register Customer"}</button>
+            <button disabled={newCustomerMutation.isSuccess} className='btn-register' type='submit'>
+              {newCustomerMutation.isSuccess ? "Loading..." : "Register Customer"}
+            </button>
           </form>
         </div>
       </main>

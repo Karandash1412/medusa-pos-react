@@ -1,7 +1,3 @@
-// import Catalog from "../components/Catalog";
-// import Cart from "../components/Cart";
-// import CartTotals from "../components/CartTotals";
-
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/layout.css";
 
@@ -9,11 +5,7 @@ const Layout = () => {
   const navigate = useNavigate();
 
   return (
-    // <div>
-    //   <Catalog />
-    //   <Cart />
-    //   <CartTotals />
-    // </div>
+
     <div className='main-menu'>
       <header>
         <h1 className='page-name'>Main Menu</h1>
