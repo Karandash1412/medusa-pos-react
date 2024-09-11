@@ -104,3 +104,29 @@ const Register = () => {
 };
 
 export default Register;
+// API Call for updating draft order without medusa-react
+// const updateDraftOrderAPI = medusa.admin.users.update(
+//     userId, {
+//     api_token
+// })
+
+// .then(({ user }) => {
+//     console.log(user.api_token)
+// })
+// const updateDraftOrderAPI = async (draftOrderId: string, data: any) => {
+
+//     try {
+//         const response = await fetch(`"http://localhost:9000/"${draftOrderId}`, {
+//             method: "POST",
+//             headers: {
+//                 Authorization: `Bearer your-api-key`,
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(data),
+//         });
+//         const result = await response.json();
+//         return result.draft_order;
+//     } catch (error) {
+//         throw new Error("Error updating draft order");
+//     }
+// };
