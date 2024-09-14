@@ -46,6 +46,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         setClient((prevInfo: any) => {
             return { ...prevInfo, customerOrder: updatedCart };
         });
+        console.log(client);
     }
 
     // Handle client selection
@@ -66,6 +67,12 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
 
 
     const handleCheckout = async () => {
+        const items = client.customerOrder.map((product: any) => ({
+            variant_id: product.variants[0].id,
+            title: product.title,
+            quantity: 1,
+        }));
+        console.log(items);
         const email = client.email;
         const region_id = 'reg_01J5CG09VEMADX7MHZ2AV65DA6';
 
@@ -77,18 +84,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         const createDraftOrder = await medusa.admin.draftOrders.create({
             email,
             region_id,
-            items: [
-                {
-                    // defined product
-                    quantity: client.customerOrder.length,
-                },
-                {
-                    // custom product
-                    quantity: 1,
-                    unit_price: 1000,
-                    title: "Custom Product",
-                },
-            ],
+            items,
             shipping_methods: [
                 {
                     option_id: shippingOptions[0].id,
@@ -96,8 +92,10 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
                 },
             ],
         })
+
         console.log(createDraftOrder);
     };
+
 
 
     return (

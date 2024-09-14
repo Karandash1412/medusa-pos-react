@@ -13,6 +13,7 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
         queryKey: ['customer'],
         queryFn: async () => {
             const response = await medusa.admin.customers.list();
+            console.log(response.customers)
             return response.customers; // Return customers array from response
         },
         // Optional: Add a stale time and cache time to control data refetching and caching
