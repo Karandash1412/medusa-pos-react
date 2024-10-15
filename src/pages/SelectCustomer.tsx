@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Customer from "../components/Customer";
 import { useQuery } from "@tanstack/react-query";
 import { medusa } from "../lib/medusa-provider";
@@ -7,6 +8,7 @@ import "../styles/selectCustome.css";
 
 const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (enable: boolean) => void }) => {
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     // Fetch customers from Medusa API
     const { isLoading, isError, data, error } = useQuery({
@@ -16,7 +18,6 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
             console.log(response.customers)
             return response.customers; // Return customers array from response
         },
-        // Optional: Add a stale time and cache time to control data refetching and caching
         staleTime: 60000, // 1 minute
         // cacheTime: 300000, // 5 minutes
     });
@@ -27,13 +28,21 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
         const typedError = error as Error;
         return <pre>Error:{typedError.message}</pre>
     }
+    // Filter customers based on search query
+    const filteredCustomers = data?.filter((customer: any) => {
+        const fullName = `${customer.first_name} ${customer.last_name}`.toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+    });
 
     function handleClick(id: string) {
         setClient(data?.find((client: any) => client.id === id));
         setEnable(false);
         navigate('/shopping-panel');
-        // console.log(data?.find((client: any) => client.id === id));
     }
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
 
     return (
         <div>
@@ -46,20 +55,27 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
             <main className='select-customer-menu'>
                 <div className='search-bar'>
                     <p>Search</p>
-                    <input type='text' placeholder='Search Customer Name' />
+                    <input type="text"
+                        placeholder="Search Customer Name"
+                        value={searchQuery}
+                        onChange={handleSearchChange} />
                 </div>
                 <div className='search-results'>
                     <p>Search Results</p>
                     <div className='customer-results'>
-                        {data?.map((e: any) => (
-                            <Customer
-                                handleClick={handleClick}
-                                name={e.first_name}
-                                surname={e.last_name}
-                                key={e.id}
-                                id={e.id}
-                            />
-                        ))}
+                        {filteredCustomers?.length > 0 ? (
+                            filteredCustomers.map((customer: any) => (
+                                <Customer
+                                    handleClick={handleClick}
+                                    name={customer.first_name}
+                                    surname={customer.last_name}
+                                    key={customer.id}
+                                    id={customer.id}
+                                />
+                            ))
+                        ) : (
+                            <p>No customers found.</p>
+                        )}
                     </div>
                 </div>
             </main>

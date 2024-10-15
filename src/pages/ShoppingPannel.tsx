@@ -3,17 +3,26 @@ import { useQuery } from "@tanstack/react-query";
 import Products from "../components/Products";
 import Customer from "../components/Customer";
 import { medusa } from "../lib/medusa-provider";
+import { useEffect } from "react";
 import "../styles/shoppingPanel.css";
 
 const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any; disable: boolean; setClient: any; setEnable: (enable: boolean) => void; }) => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedClient = localStorage.getItem("client");
+        if (storedClient) {
+            setClient(JSON.parse(storedClient));
+            setEnable(false);
+        }
+    }, [setClient, setEnable]);
 
     // Query for customers
     const { isLoading: customerIsLoading, isError: customerIsError, data: customersData, error: customerError, } = useQuery({
         queryKey: ["customer"],
         queryFn: async () => {
             const response = await medusa.admin.customers.list();
-            return response.customers; // Return customers array from response
+            return response.customers;
         },
     });
 
@@ -38,23 +47,25 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         const selectedProduct = productQuery?.find((product: any) => product.id === productId);
 
         const updatedCart = client.customerOrder ? [...client.customerOrder, selectedProduct] : [selectedProduct];
-
         const orderLength = updatedCart.length;
-
         updatedCart[updatedCart.length - 1] = { ...selectedProduct, uniqueId: orderLength };
 
-        setClient((prevInfo: any) => {
-            return { ...prevInfo, customerOrder: updatedCart };
-        });
-        console.log(client);
+        setClient((prevInfo: any) => ({
+            ...prevInfo,
+            customerOrder: updatedCart
+        }));
     }
-
     // Handle client selection
-    function handleClick(id: any) {
+    function handleClick(id: string) {
         const selectedClient = customersData?.find((customer: any) => customer.id === id);
         if (selectedClient) {
-            setClient(selectedClient);
+            const updatedClient = { ...selectedClient, customerOrder: [] };
+            localStorage.setItem("client", JSON.stringify(updatedClient));
+            setClient(updatedClient);
             setEnable(false);
+            // const storedClient = JSON.parse(localStorage.getItem("client") || "{}");
+            // setClient(storedClient);
+            // setEnable(false);
         }
     }
 
@@ -88,7 +99,6 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
             shipping_methods: [
                 {
                     option_id: shippingOptions[0].id,
-
                 },
             ],
         })

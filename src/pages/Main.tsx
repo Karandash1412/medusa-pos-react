@@ -1,9 +1,10 @@
-import "../styles/main.css"
 import { Link } from 'react-router-dom';
 import StripeTerminals from "../components/StripeTerminals"
 import { medusa } from "../lib/medusa-provider";
+import Cookies from "js-cookie";
+import "../styles/main.css"
 
-const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { setEnable: (disable: boolean) => void, setClient: any, detectTerminal: string, disable: boolean, setIsLogged: (isLogged: boolean) => void }) => {
+const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { setEnable: (disable: boolean) => void, setClient: any, detectTerminal: string, disable: boolean, setIsLogged: (isLogged: any) => void }) => {
 
     return (
         <div className="main-page">
@@ -21,7 +22,7 @@ const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { 
                     <Link className="color" to="/login" onClick={() => {
                         setEnable(true);
                         setClient("");
-                        setIsLogged(false);
+                        setIsLogged(Cookies.set("token", ""));
                         medusa.admin.auth.deleteSession();
                     }}><li>Log Out</li></Link>
                 </ul>
