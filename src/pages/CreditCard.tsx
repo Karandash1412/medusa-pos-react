@@ -37,5 +37,4 @@ const CreditCard = ({ client }: { client: any }) => {
         </div>
     );
 };
-
 export default CreditCard;

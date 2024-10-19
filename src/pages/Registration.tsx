@@ -24,7 +24,6 @@ const Register = () => {
 
   const newCustomerMutation = useMutation({
     mutationFn: async (newCustomer: any) => {
-      // Simulate a network request with a delay (e.g., using fetch or axios in a real application)
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Call the Medusa admin API to create a new customer
@@ -34,21 +33,13 @@ const Register = () => {
         last_name: newCustomer.lName,
         password: newCustomer.password,
       });
-
       // Return the newly created customer data
       return response.customer;
     },
     onSuccess: () => {
       // Invalidate the customer query to refresh the data
       queryCustomer.invalidateQueries({ queryKey: ["customer"] });
-
-
-      // Navigate to the "select-customer" page
       navigate("/select-customer");
-    },
-    onError: (error: any) => {
-      // Handle error (optional)
-      console.error("Error creating customer:", error);
     },
   });
 
@@ -102,31 +93,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;
-// API Call for updating draft order without medusa-react
-// const updateDraftOrderAPI = medusa.admin.users.update(
-//     userId, {
-//     api_token
-// })
-
-// .then(({ user }) => {
-//     console.log(user.api_token)
-// })
-// const updateDraftOrderAPI = async (draftOrderId: string, data: any) => {
-
-//     try {
-//         const response = await fetch(`"http://localhost:9000/"${draftOrderId}`, {
-//             method: "POST",
-//             headers: {
-//                 Authorization: `Bearer your-api-key`,
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(data),
-//         });
-//         const result = await response.json();
-//         return result.draft_order;
-//     } catch (error) {
-//         throw new Error("Error updating draft order");
-//     }
-// };

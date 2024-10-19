@@ -8,7 +8,8 @@ import "../styles/selectCustome.css";
 
 const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (enable: boolean) => void }) => {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Fetch customers from Medusa API
     const { isLoading, isError, data, error } = useQuery({
@@ -16,18 +17,18 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
         queryFn: async () => {
             const response = await medusa.admin.customers.list();
             console.log(response.customers)
-            return response.customers; // Return customers array from response
+            return response.customers;
         },
         staleTime: 60000, // 1 minute
         // cacheTime: 300000, // 5 minutes
     });
 
     if (isLoading) return <h1>Loading...</h1>;
-
     if (isError) {
         const typedError = error as Error;
         return <pre>Error:{typedError.message}</pre>
     }
+
     // Filter customers based on search query
     const filteredCustomers = data?.filter((customer: any) => {
         const fullName = `${customer.first_name} ${customer.last_name}`.toLowerCase();
@@ -40,7 +41,7 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
         navigate('/shopping-panel');
     }
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchChange = (e: any) => {
         setSearchQuery(e.target.value);
     };
 
@@ -82,5 +83,4 @@ const SelectCustomer = ({ setClient, setEnable }: { setClient: any, setEnable: (
         </div>
     );
 };
-
 export default SelectCustomer;

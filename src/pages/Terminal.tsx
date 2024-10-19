@@ -7,13 +7,12 @@ import "../styles/stripeTerminal.css";
 
 const Terminal = ({ setDetectTerminal }: { setDetectTerminal: (detectTerminal: string) => void }) => {
     const navigate = useNavigate();
+
     const terminalQuery = useQuery({
         queryKey: ["terminal"],
-        // get API request from the medusa server
-        //import {getStripeTerminals} from "./api/stripeTerminals";
-        // queryFn: getStripeTerminals,
         queryFn: () => [...stripeTerminals],
     });
+
     if (terminalQuery.isLoading) return <h1>Loading...</h1>
     if (terminalQuery.isError) return <pre>{JSON.stringify(terminalQuery.error)}</pre>
 

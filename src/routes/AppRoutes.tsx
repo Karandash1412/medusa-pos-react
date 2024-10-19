@@ -12,14 +12,8 @@ const AppRoutes = () => {
     const [isLogged, setIsLogged] = useState(() => !!Cookies.get('token'));
     const [detectTerminal, setDetectTerminal] = useState("Please select the terminal");
     const [disable, setEnable] = useState(true);
-    // const [client, setClient] = useState(() => {
-    //     const localstorage = localStorage.getItem("client");
-    //     console.log(localstorage)
-    //     return localstorage ? JSON.parse(localstorage) : { customerOrder: [] };
-    // });
     const [client, setClient] = useState("")
     console.log(client);
-    console.log(localStorage.getItem('client'))
     useEffect(() => {
         if (Object.keys(client).length !== 0) {
             localStorage.setItem('client', JSON.stringify(client));

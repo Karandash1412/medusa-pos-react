@@ -25,10 +25,10 @@ const Main = ({ setEnable, setClient, detectTerminal, disable, setIsLogged }: { 
                         setIsLogged(Cookies.set("token", ""));
                         medusa.admin.auth.deleteSession();
                     }}><li>Log Out</li></Link>
+                    <Link to="/draft-orders"><li>Draft Orders</li></Link>
                 </ul>
-            </nav >
-        </div >
+            </nav>
+        </div>
     );
 };
-
 export default Main;

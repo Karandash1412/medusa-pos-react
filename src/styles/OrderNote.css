@@ -1,14 +1,24 @@
 .order-note {
-    margin: 25px 18px;
+    margin: 25px 18px 0px 18px;
+    display: flex;
+    height: 80vh;
+    justify-content: flex-start;
 }
 
-.order-note input {
+.input-note {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-note input {
     background-color: rgba(210, 244, 255, 1);
     height: 70px;
-    width: 60%;
+    width: 500px;
 }
 
-.order-note input::placeholder {
+.input-note input::placeholder {
     color: black;
     text-align: center;
 }
@@ -17,4 +27,8 @@
     width: 120px;
     height: 40px;
     background-color: black;
+}
+
+.notes li:hover {
+    cursor: pointer;
 }

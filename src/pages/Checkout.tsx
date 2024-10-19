@@ -53,5 +53,4 @@ const Checkout = ({ setClient }: { setClient: any }) => {
     </div>
   );
 };
-
 export default Checkout;

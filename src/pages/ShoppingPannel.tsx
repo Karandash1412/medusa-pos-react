@@ -3,10 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import Products from "../components/Products";
 import Customer from "../components/Customer";
 import { medusa } from "../lib/medusa-provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../styles/shoppingPanel.css";
+import Product from "../components/Products";
 
 const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any; disable: boolean; setClient: any; setEnable: (enable: boolean) => void; }) => {
+    const [search, setSearch] = useState("")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,6 +44,11 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         return <div>Error: {typedError.message}</div>;
     }
 
+    const filteredProducts = productQuery?.filter((product) => {
+        const result = product.title?.toLowerCase();
+        return result?.includes(search.toLowerCase())
+    }) ?? [];
+
     // Update selectProduct to use the API-based draft order mutation
     function selectProduct(productId: string) {
         const selectedProduct = productQuery?.find((product: any) => product.id === productId);
@@ -56,7 +63,7 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         }));
     }
     // Handle client selection
-    function handleClick(id: string) {
+    function handleClickClient(id: string) {
         const selectedClient = customersData?.find((customer: any) => customer.id === id);
         if (selectedClient) {
             const updatedClient = { ...selectedClient, customerOrder: [] };
@@ -76,14 +83,13 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         });
     }
 
-
     const handleCheckout = async () => {
         const items = client.customerOrder.map((product: any) => ({
             variant_id: product.variants[0].id,
             title: product.title,
             quantity: 1,
         }));
-        console.log(items);
+        // console.log(items);
         const email = client.email;
         const region_id = 'reg_01J5CG09VEMADX7MHZ2AV65DA6';
 
@@ -106,7 +112,9 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         console.log(createDraftOrder);
     };
 
-
+    const searchEngine = (e: any) => {
+        setSearch(e.target.value);
+    };
 
     return (
         <div>
@@ -123,7 +131,12 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
                 )}
                 <div className="search-bar">
                     <p>🔎 Search Product</p>
-                    <input type="text" placeholder="Search Product..." />
+                    <input type="text" placeholder="Search Product..." onChange={searchEngine} value={search} />
+                    {/* {filterProduct?.length > 0 ? (filterProduct?.map(product)=>{
+                        <Product key={product.id} title={product.title} selectProduct={() => selectProduct(product.id)} />
+                    }):(
+                    <p>No customers found.</p>
+                    )} */}
                 </div>
                 {!disable ? (
                     <Link to="/order-note">
@@ -153,9 +166,13 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
                                 ) : productIsError ? (
                                     <h2>Error Loading Product Cards: {(productError as Error).message}</h2>
                                 ) : (
-                                    productQuery?.map((e: any) => (
-                                        <Products key={e.id} title={e.title} selectProduct={() => selectProduct(e.id)} />
-                                    ))
+                                    filteredProducts.length > 0 ? (
+                                        filteredProducts?.map((product: any) => (
+                                            <Product key={product.id} title={product.title} selectProduct={() => selectProduct(product.id)} />
+                                        ))
+                                    ) : (
+                                        <p>No products found.</p>
+                                    )
                                 )
                             ) : (
                                 <h2>Select the customer first</h2>
@@ -186,9 +203,9 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
                         ) : (
                             <div className="summery">
                                 <div className="customer-results shopping-cart">
-                                    {customersData?.map((e: any) => (
+                                    {customersData.map((e: any) => (
                                         <Customer
-                                            handleClick={handleClick}
+                                            handleClick={handleClickClient}
                                             name={e.first_name}
                                             surname={e.last_name}
                                             key={e.id}
@@ -204,5 +221,4 @@ const ShoppingPanel = ({ client, disable, setClient, setEnable }: { client: any;
         </div>
     );
 };
-
 export default ShoppingPanel;

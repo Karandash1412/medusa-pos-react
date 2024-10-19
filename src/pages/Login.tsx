@@ -9,12 +9,10 @@ import "../styles/login.css";
 const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
 
     const [visiability, setVisiability] = useState(true);
-
     const [loginPassword, setLoginPassword] = useState({
         login: "",
         password: "",
     });
-
     const [errorMsg, setErrorMsg] = useState("");
 
     // Navigation
@@ -43,8 +41,6 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
         }).then(({ access_token }) => {
             const setCookie = Cookies.set("token", access_token, { expires: 7, });
             setIsLogged(!!setCookie);
-            // Cookies.set("token", access_token, { expires: 7, });
-            // setIsLogged(true);
         })
     }
     const showPassword = () => {
@@ -117,5 +113,4 @@ const Login = ({ setIsLogged }: { setIsLogged: (isLogged: any) => void }) => {
         </div>
     );
 };
-
 export default Login;

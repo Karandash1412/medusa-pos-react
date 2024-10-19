@@ -16,7 +16,6 @@ export default function TestProduct() {
         refetchInterval: 5000, // 5 seconds
     });
 
-
     // Handle loading state
     if (productIsLoading) return <div>Loading...</div>
 
